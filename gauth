@@ -75,13 +75,18 @@ class GAuth:
         for i,v in enumerate(self.keys):
             print "%s: %s" % (i,v.getName())
 
+        print
+        print "q: exit"
+
         pick = raw_input()
 
         try:
             pick = int(pick)
         except:
-            print "A number please..."
-            return
+            if pick != "q":
+                print "A number please..."
+                return True
+            return False
 
         try:
             while True:
@@ -95,7 +100,7 @@ class GAuth:
                 clipboard.store()
                 time.sleep(1)
         except KeyboardInterrupt:
-            return
+            return True
 
 if __name__=="__main__":
     args = argparse.ArgumentParser()
@@ -104,7 +109,11 @@ if __name__=="__main__":
 
     try:
         if p.action == "gen":
-            GAuth(getpass.getpass("Master passwd: ")).printKey()
+            x=GAuth(getpass.getpass("Master passwd: "))
+            while(x.printKey()):
+                print "\n\n"
+            print "Bye."
+
         if p.action == "add":
             GAuth(getpass.getpass("Master passwd: ")).addKey(raw_input("Name: "), raw_input("Key: "))
         if p.action == "del":
